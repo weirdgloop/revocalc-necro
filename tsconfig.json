@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": false,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "declaration": true,
+  },
+  "include": [
+    "index.ts",
+    "index.d.ts",
+    "./node_modules/types-mediawiki"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
