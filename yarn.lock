@@ -2,12 +2,25 @@
 # yarn lockfile v1
 
 
-"@types/jquery@^3.5.16", "@types/jquery@^3.5.5":
+"@types/jquery@*", "@types/jquery@^3.5.16", "@types/jquery@^3.5.5":
   version "3.5.16"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.16.tgz#632131baf30951915b0317d48c98e9890bdf051d"
   integrity sha512-bsI7y4ZgeMkmpG9OM710RRzDFp+w4P1RGiIt30C1mSBT+ExCleeh4HObwgArnDFELmRrOpXgSYN9VF1hj+f1lw==
   dependencies:
     "@types/sizzle" "*"
+
+"@types/oojs-ui@^0.47.0":
+  version "0.47.0"
+  resolved "https://registry.yarnpkg.com/@types/oojs-ui/-/oojs-ui-0.47.0.tgz#3072a2c461afa3e01deb4f8d3b434f277e78fa85"
+  integrity sha512-WKy84t0xOMtR50xTkKc+z5K1WQEb3NJ2BZpTOPCemBOlPl+Phu7Vr3lpZSPujoVdDbbzPqN7hWZca6fsD+ngjQ==
+  dependencies:
+    "@types/jquery" "*"
+    "@types/oojs" "*"
+
+"@types/oojs@*":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/oojs/-/oojs-7.0.0.tgz#3cc68df7242f4e1770af3cfa5e1a601fcde1c76e"
+  integrity sha512-yFU98CVZrz6TXTguTKbPoH4qi7B8JC3hUXLCJQQzyBaAIM77MTu9/YywcuJd//hsWZu8eLmEyADFVc9V7PdPcg==
 
 "@types/sizzle@*":
   version "2.3.3"
