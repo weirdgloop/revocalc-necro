@@ -14,7 +14,6 @@
   "include": [
     "index.ts",
     "index.d.ts",
-    "./node_modules/types-mediawiki"
   ],
   "exclude": [
     "node_modules"

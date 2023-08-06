@@ -43,6 +43,16 @@ let actionBarSlots = 10;
 
 let draggedAbility: HTMLElement = null;
 
+const onDragOver = (e: JQuery.DragOverEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (!e.currentTarget.classList.contains('hovering')) e.currentTarget.classList.add('hovering');
+}
+
+const onDragLeave = (e: JQuery.DragLeaveEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (e.currentTarget.classList.contains('hovering')) e.currentTarget.classList.remove('hovering');
+}
+
 const init = () => {
     // If there is no class for the calculator present on the page, do nothing in this script.
     if (!$(`.${calcClass}`).length) {
@@ -57,6 +67,21 @@ const createCalculatorInterface = () => {
     // Create the abilities UI
     const abilities = $('<div>').addClass('revo-calc-abilities');
 
+    abilities.on('dragover', onDragOver);
+    abilities.on('dragleave', onDragLeave);
+
+    abilities.on('drop', (e) => {
+        e.preventDefault();
+        let $draggedAbility = $(draggedAbility);
+        if (e.currentTarget.classList.contains('hovering')) e.currentTarget.classList.remove('hovering');
+
+        // If the dragged ability isn't already here, append it
+        let $targetChildren = $(e.currentTarget).find(`[data-ability-name='${$draggedAbility.attr('data-ability-name')}']`);
+        if ($targetChildren.length === 0) {
+            $(e.currentTarget).append(draggedAbility);
+        }
+    })
+
     for (let a in ABILITIES_MAP) {
         let info = ABILITIES_MAP[a];
 
@@ -66,6 +91,11 @@ const createCalculatorInterface = () => {
             .css({
                 'background': `url(${rs.getFileURLCached(info.img ? info.img : a + '.png')})`
             })
+
+        // new window.Tooltip(ability, {
+        //     placement: 'top',
+        //     title: a
+        // });
 
         // Add drag event to the abilities
         ability.on('dragstart', (e) => {
@@ -88,12 +118,23 @@ const createCalculatorInterface = () => {
     for (let i = 0; i < actionBarSlots; i++) {
         let slot = abilitySlot.clone().attr('data-slot-id', i);
 
-        slot.on('dragover', (e) => e.preventDefault());
+        slot.on('dragover', onDragOver);
+        slot.on('dragleave', onDragLeave);
+
         slot.on('drop', (e) => {
             e.preventDefault();
+            let $draggedAbility = $(draggedAbility);
+            if (e.currentTarget.classList.contains('hovering')) e.currentTarget.classList.remove('hovering');
 
-            // If this element was dragged from the abilities panel, copy it, else move it
-            $(e.target).append(draggedAbility);
+            // If there's any abilities already appended to the drop target...
+            let $targetChildren = $(e.currentTarget).children();
+            if ($targetChildren.length > 0 && $targetChildren.attr('data-ability-name') !== $draggedAbility.attr('data-ability-name')) {
+                // Add them back to the abilities UI
+                $(abilities).append($targetChildren);
+            }
+
+            // Append the ability to the drop target
+            $(e.currentTarget).append(draggedAbility);
         })
 
         slots.push(slot);
@@ -103,9 +144,11 @@ const createCalculatorInterface = () => {
     actionBar.append(slots);
 
     // Append the components to the calculator
-    $(`.${calcClass}`).append(abilities, $('<h4>')
+    $(`.${calcClass}`).append($('<h4>')
         .text('Drag abilities to the action bar')
-        .css({'margin-bottom': '.25em'}), actionBar);
+        .css({'margin-bottom': '.25em'}), abilities, actionBar);
 }
 
-$(init);
+mw.loader.using(['ext.gadget.rsw-util', 'ext.gadget.tooltip'], function () {
+    $(init);
+})
